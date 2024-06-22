@@ -13,12 +13,13 @@ const createPlace = (req, res) => {
 
 const searchPlace = (req, res) => {
   const keyword = req.query.keyword;
+
   Place.getName(keyword, (err, result) => {
     if (err) {
       res.status(500).json({ error: "Error getting data" });
       return;
     }
-    res.status(200).json({ data: result });
+    res.status(200).json({ result: result });
   });
 };
 
@@ -29,7 +30,7 @@ const getPlaceByID = (req, res) => {
       res.status(500).json({ error: "Error getting data" });
       return;
     }
-    res.status(200).json({ data: result });
+    res.status(200).json({ result: result });
   });
 };
 
