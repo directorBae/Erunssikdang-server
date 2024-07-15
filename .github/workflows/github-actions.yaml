@@ -33,6 +33,15 @@ jobs:
           cd ..
           rm -rf temp-deploy
 
+      - name: Remove existing tarball on EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            rm -f ~/deploy/backend/backend-build.tar.gz
+
       - name: Upload build artifact to EC2
         uses: appleboy/scp-action@master
         with:
