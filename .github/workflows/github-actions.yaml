@@ -59,12 +59,12 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             # Stop the existing backend service
-            pm2 stop all
+            sudo pm2 stop all
             # Extract the new build
             sudo tar -xzf ~/deploy/backend/backend-build.tar.gz -C ~/deploy/backend/
             # Install dependencies
-            cd ~/deploy/backend && npm install --production
+            cd ~/deploy/backend && sudo npm install --production
             # Start the backend service
-            pm2 start app.js
+            sudo pm2 start src/index.js --name "my-app"
             # Save the PM2 process list
-            pm2 save
+            sudo pm2 save
