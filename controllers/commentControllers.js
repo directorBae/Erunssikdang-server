@@ -1,7 +1,8 @@
 import Comment from "../models/commentModels.js";
 
 const insertComment = (req, res) => {
-  const commentData = req.body;
+  const placeId = req.query.id;
+  const commentData = req.body.data;
   Comment.insert(commentData, (err, result) => {
     if (err) {
       res.status(500).json({ error: "Error inserting data" });
@@ -12,7 +13,7 @@ const insertComment = (req, res) => {
 };
 
 const getComments = (req, res) => {
-  const placeId = req.params.id;
+  const placeId = req.query.id;
   Comment.getComments(placeId, (err, result) => {
     if (err) {
       res.status(500).json({ error: "Error getting data" });

@@ -1,0 +1,60 @@
+name: Backend CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "21"
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Run tests
+        run: |
+          npm test
+
+      - name: Create tarball
+        run: tar -czf backend-build.tar.gz .
+
+      - name: Upload build artifact to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          source: "backend-build.tar.gz"
+          target: "~/deploy/backend/"
+
+      - name: Extract and deploy on EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            # Stop the existing backend service
+            pm2 stop all
+            # Extract the new build
+            sudo tar -xzf ~/deploy/backend/backend-build.tar.gz -C ~/deploy/backend/
+            # Install dependencies
+            cd ~/deploy/backend && npm install --production
+            # Start the backend service
+            pm2 start app.js
+            # Save the PM2 process list
+            pm2 save

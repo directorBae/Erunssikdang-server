@@ -12,7 +12,7 @@ const insertReply = (req, res) => {
 };
 
 const getReplys = (req, res) => {
-  const commentId = req.params.id;
+  const commentId = req.query.id;
   Reply.getReplys(commentId, (err, result) => {
     if (err) {
       res.status(500).json({ error: "Error getting data" });
