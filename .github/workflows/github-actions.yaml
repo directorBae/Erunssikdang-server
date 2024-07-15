@@ -27,8 +27,7 @@ jobs:
       - name: Prepare deployment package
         run: |
           mkdir -p temp-deploy
-          cp -r * temp-deploy/
-          cp -r .env temp-deploy/
+          rsync -av --exclude='temp-deploy' --exclude='.git' --exclude='node_modules' . temp-deploy/
           cd temp-deploy
           tar -czf ../backend-build.tar.gz .
           cd ..
