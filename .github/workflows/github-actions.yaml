@@ -67,6 +67,6 @@ jobs:
             # Install dependencies
             cd ~/deploy/backend && npm install --production
             # Start the backend service
-            pm2 start src/index.js --name "my-app"
+            pm2 start src/app.js --name "my-app"
             # Save the PM2 process list
             pm2 save
