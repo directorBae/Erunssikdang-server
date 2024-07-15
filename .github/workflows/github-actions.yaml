@@ -24,9 +24,15 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Create tarball
+      - name: Prepare deployment package
         run: |
-          tar --exclude='./node_modules' --exclude='./.git' -czf backend-build.tar.gz .
+          mkdir -p temp-deploy
+          cp -r * temp-deploy/
+          cp -r .env temp-deploy/
+          cd temp-deploy
+          tar -czf ../backend-build.tar.gz .
+          cd ..
+          rm -rf temp-deploy
 
       - name: Upload build artifact to EC2
         uses: appleboy/scp-action@master
