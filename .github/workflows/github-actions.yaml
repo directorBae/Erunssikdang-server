@@ -22,11 +22,11 @@ jobs:
           node-version: "21"
 
       - name: Install dependencies
-        run: |
-          npm install
+        run: npm install
 
       - name: Create tarball
-        run: tar -czf backend-build.tar.gz .
+        run: |
+          tar --exclude='./node_modules' --exclude='./.git' -czf backend-build.tar.gz .
 
       - name: Upload build artifact to EC2
         uses: appleboy/scp-action@master
@@ -51,6 +51,6 @@ jobs:
             # Install dependencies
             cd ~/deploy/backend && npm install --production
             # Start the backend service
-            pm2 start app.js
+            pm2 start index.js
             # Save the PM2 process list
             pm2 save
