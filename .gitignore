@@ -3,4 +3,7 @@ node_modules/
 package-lock.json
 
 # security
-.env
+*.env
+
+# data
+*.sql

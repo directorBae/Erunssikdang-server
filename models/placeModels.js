@@ -15,6 +15,8 @@ const Place = {
       ],
       (err, results) => {
         if (err) return callback(err);
+        else if (results.affectedRows === 0)
+          return callback("No data inserted");
         callback(null, results);
       }
     );
@@ -26,6 +28,7 @@ const Place = {
 
     db.query(query, values, (err, results) => {
       if (err) return callback(err);
+      else if (results.length === 0) return callback("No data found");
       callback(null, results);
     });
   },
@@ -34,6 +37,7 @@ const Place = {
     const query = "SELECT * FROM place WHERE id = ?";
     db.query(query, [placeID], (err, results) => {
       if (err) return callback(err);
+      else if (results.length === 0) return callback("No data found");
       callback(null, results);
     });
   },

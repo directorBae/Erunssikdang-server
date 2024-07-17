@@ -24,7 +24,7 @@ const getComments = (req, res) => {
 };
 
 const pushGood = (req, res) => {
-  const commentID = req.params.id;
+  const commentID = req.query.id;
   Comment.pushGood(commentID, (err, result) => {
     if (err) {
       res.status(500).json({ error: "Error updating data" });
@@ -35,7 +35,7 @@ const pushGood = (req, res) => {
 };
 
 const pushBad = (req, res) => {
-  const commentID = req.params.id;
+  const commentID = req.query.id;
   Comment.pushBad(commentID, (err, result) => {
     if (err) {
       res.status(500).json({ error: "Error updating data" });
